@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Ball : MonoBehaviour {
 
@@ -34,12 +35,22 @@ public class Ball : MonoBehaviour {
             SoundManager.Instace.PlayOneShot(SoundManager.Instace.wallBloop);
         }
         //LeftGoal or RightGoal
-        if ((col.gameObject.name == "leftGoal") ||
-            col.gameObject.name == "RightGoal")
+        if ((col.gameObject.name == "LeftVertWall") ||
+            col.gameObject.name == "RightVertWall")
         {
             SoundManager.Instace.PlayOneShot(SoundManager.Instace.goalBloop);
 
             // TODO upadate Score UI
+            if(col.gameObject.name == "LeftVertWall")
+            {
+                IncreaseTextUIScore("leftscore");
+            }
+            if (col.gameObject.name == "RightVertWall")
+            {
+                IncreaseTextUIScore("rightScore");
+
+            }
+
 
             transform.position = new Vector2(0,0);
         }
@@ -71,5 +82,17 @@ public class Ball : MonoBehaviour {
     float BallHitPaddleWhere(Vector2 ball, Vector2 paddle, float paddleHeight)
     {
         return (ball.y = paddle.y / paddleHeight);
+    }
+
+    void IncreaseTextUIScore(string textUIName)
+    {
+        var textUIComp = GameObject.Find
+            (textUIName).GetComponent<Text>();
+
+        int score = int.Parse(textUIComp.text);
+
+        score++;
+
+        textUIComp.text = score.ToString();
     }
 }
